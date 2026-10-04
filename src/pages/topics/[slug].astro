@@ -1,0 +1,24 @@
+---
+import Base from '../../layouts/Base.astro';
+import Meter from '../../components/Meter.astro';
+import GuideList from '../../components/GuideList.astro';
+import Offer from '../../components/Offer.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import Signup from '../../components/Signup.astro';
+import { TOPICS } from '../../lib/catalog.js';
+import { getGuides } from '../../lib/site.js';
+export function getStaticPaths() { return TOPICS.map((t) => ({ params: { slug: t.slug }, props: { t } })); }
+const { t } = Astro.props;
+const guides = (await getGuides()).filter((g) => g.data.topic === t.slug);
+---
+<Base title={t.name} description={t.blurb}>
+  <div class="crumbs"><a href="/topics/">Topics</a> / {t.name}</div>
+  <div class="page-head"><Meter tier={t.tier} /><h1>{t.name}</h1><p>{t.blurb}</p></div>
+  <div class="article">
+    <div class="stack">
+      <GuideList guides={guides} />
+      <section><h2 class="h-small">Recommended for {t.name.toLowerCase()}</h2>{t.offers.map((id) => <Offer id={id} />)}</section>
+    </div>
+    <aside><AdSlot kind="rect" /><Signup variant="side" id="side-signup" /></aside>
+  </div>
+</Base>

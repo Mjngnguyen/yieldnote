@@ -1,0 +1,41 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Offer from '../../components/Offer.astro';
+import Calculator from '../../components/Calculator.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import Signup from '../../components/Signup.astro';
+import GuideList from '../../components/GuideList.astro';
+import Comments from '../../components/Comments.astro';
+import { getGuides, topicBy, readingTime } from '../../lib/site.js';
+import { SITE } from '../../site.config.js';
+export async function getStaticPaths() {
+  const guides = await getGuides();
+  return guides.map((g) => ({ params: { slug: g.id }, props: { g, related: guides.filter((x) => x.data.topic === g.data.topic && x.id !== g.id) } }));
+}
+const { g, related } = Astro.props;
+const { Content } = await render(g);
+const t = topicBy(g.data.topic);
+const jsonld = { '@context': 'https://schema.org', '@type': 'Article', headline: g.data.title, description: g.data.description,
+  datePublished: g.data.pubDate.toISOString(), dateModified: (g.data.updatedDate || g.data.pubDate).toISOString(), publisher: { '@type': 'Organization', name: SITE.name } };
+---
+<Base title={g.data.title} description={g.data.description}>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonld)} />
+  <div class="article">
+    <article class="stack" data-pagefind-body>
+      <div class="crumbs" data-pagefind-ignore><a href="/topics/">Topics</a> / <a href={`/topics/${t.slug}/`}>{t.name}</a></div>
+      <header>
+        <h1>{g.data.title}</h1><p class="dek">{g.data.description}</p>
+        <p class="meta"><time datetime={g.data.pubDate.toISOString()}>{g.data.pubDate.toLocaleDateString('en-US', { dateStyle: 'medium' })}</time> · {readingTime(g.body)} min read</p>
+      </header>
+      <p class="disclose" data-pagefind-ignore>Some links are affiliate links: we may earn a commission at no cost to you. <a href="/disclosure/">How we make money</a>.</p>
+      <div class="prose"><Content /></div>
+      {g.data.tool && <Calculator id={g.data.tool} compact />}
+      <div data-pagefind-ignore class="stack">{g.data.offers.map((id) => <Offer id={id} />)}</div>
+      <div class="copyline" data-pagefind-ignore><button class="btn small ghost" type="button" data-copy="share">Copy link to this guide</button><span class="muted" data-copy-msg></span></div>
+      {related.length > 0 && <section data-pagefind-ignore><h2 class="h-small">More on {t.name}</h2><GuideList guides={related} /></section>}
+      <Comments />
+    </article>
+    <aside><AdSlot kind="rect" /><Signup variant="side" id="side-signup" />{t.offers.slice(0, 1).map((id) => <Offer id={id} />)}</aside>
+  </div>
+</Base>

@@ -1,0 +1,10 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { SITE } from '../site.config.js';
+---
+<Base title="Shop" description="Templates, guides and courses. Instant downloads.">
+  <PageHead eyebrow="Shop" title="Templates, guides and courses" text="Instant downloads. Built once, sold many times." />
+  <div class="grid">{SITE.products.map((p) => <ProductCard p={p} />)}</div>
+</Base>

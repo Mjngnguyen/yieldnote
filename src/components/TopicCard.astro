@@ -1,0 +1,8 @@
+---
+import Meter from './Meter.astro';
+const { t } = Astro.props;
+---
+<a class="topic" href={`/topics/${t.slug}/`}>
+  <h3>{t.name}</h3><p>{t.blurb}</p><Meter tier={t.tier} />
+  <div class="chips">{t.models.map((m) => <span class="chip">{m}</span>)}</div>
+</a>

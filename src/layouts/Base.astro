@@ -1,0 +1,65 @@
+---
+import '../styles/global.css';
+import { SITE } from '../site.config.js';
+import { TOPICS } from '../lib/catalog.js';
+const { title, description = SITE.tagline, noindex = false } = Astro.props;
+const fullTitle = title ? `${title} — ${SITE.name}` : `${SITE.name} — ${SITE.tagline}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const path = Astro.url.pathname;
+const nav = [['/topics/', 'Topics'], ['/tools/', 'Tools'], ['/shop/', 'Shop'], ['/premium/', 'Premium'], ['/playbook/', 'Revenue playbook'], ['/advertise/', 'Advertise'], ['/search/', 'Search']];
+const col = (h, items) => ({ h, items });
+const footer = [
+  col('Topics', TOPICS.slice(0, 6).map((t) => [`/topics/${t.slug}/`, t.name])),
+  col('More topics', TOPICS.slice(6).map((t) => [`/topics/${t.slug}/`, t.name])),
+  col('Site', [['/tools/', 'Calculators'], ['/shop/', 'Shop'], ['/premium/', 'Premium'], ['/advertise/', 'Advertise'], ['/contact/', 'Contact'], ['/rss.xml', 'RSS feed']]),
+  col('Legal', [['/disclosure/', 'How we make money'], ['/privacy/', 'Privacy policy'], ['/terms/', 'Terms of use']])
+];
+const ticker = TOPICS.map((t) => ({ href: `/topics/${t.slug}/`, name: t.name, tier: '$'.repeat(t.tier) }));
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  {noindex && <meta name="robots" content="noindex" />}
+  <meta property="og:type" content="website" /><meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} /><meta property="og:url" content={canonical} />
+  <meta name="twitter:card" content="summary" />
+  <link rel="alternate" type="application/rss+xml" title={SITE.name} href="/rss.xml" />
+  <link rel="sitemap" href="/sitemap-index.xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" />
+  <slot name="head" />
+  {SITE.umami.src && SITE.umami.websiteId && <script defer src={SITE.umami.src} data-website-id={SITE.umami.websiteId} is:inline></script>}
+  {/* Consent-gated: vanilla-cookieconsent enables type="text/plain" scripts per category. */}
+  {SITE.ga4 && <script type="text/plain" data-category="analytics" async src={`https://www.googletagmanager.com/gtag/js?id=${SITE.ga4}`} is:inline></script>}
+  {SITE.ga4 && <script type="text/plain" data-category="analytics" is:inline define:vars={{ id: SITE.ga4 }}>window.dataLayer = window.dataLayer || []; window.gtag = function () { dataLayer.push(arguments); }; gtag('js', new Date()); gtag('config', id);</script>}
+  {SITE.adsense.client && <script type="text/plain" data-category="ads" async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${SITE.adsense.client}`} crossorigin="anonymous" is:inline></script>}
+</head>
+<body data-consent={SITE.ga4 || SITE.adsense.client ? '1' : '0'}>
+  <div class="ticker" aria-label="Topics by advertiser demand"><div class="ticker-track">
+    {[0, 1].map((copy) => ticker.map((t) => <a href={t.href} tabindex={copy ? -1 : undefined} aria-hidden={copy ? 'true' : undefined}>{t.name} <b>{t.tier}</b></a>))}
+  </div></div>
+  <header class="site">
+    <div class="wrap bar">
+      <a class="logo" href="/">Yield<i>note</i></a>
+      <nav class="main" aria-label="Main">
+        {nav.map(([href, label]) => <a href={href} aria-current={path.startsWith(href) ? 'page' : undefined}>{label}</a>)}
+      </nav>
+      <a class="btn small" href="/#newsletter">Free starter kit</a>
+    </div>
+  </header>
+  <main class="wrap" id="main"><slot /></main>
+  <footer class="site"><div class="wrap cols">
+    {footer.map((c) => <div><h4>{c.h}</h4>{c.items.map(([href, label]) => <a href={href}>{label}</a>)}</div>)}
+    <div><h4>{SITE.name}</h4><p class="flat">{SITE.tagline}</p><p class="fine">General information, not financial advice. © {new Date().getFullYear()} {SITE.name}.</p>
+      <button type="button" class="linklike" data-cc="show-preferencesModal">Cookie settings</button></div>
+  </div></footer>
+  <script>
+    import '../lib/client.js';
+  </script>
+</body>
+</html>

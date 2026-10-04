@@ -1,0 +1,14 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { SITE } from '../site.config.js';
+---
+<Base title="How we make money">
+  <PageHead eyebrow="Transparency" title="How we make money" />
+  <div class="legal">
+    <p>{SITE.name} is free to read. We earn from display advertising, affiliate commissions, sponsorships, our own digital products and memberships.</p>
+    <p><strong>Affiliate links.</strong> When you click a partner link and buy or sign up, we may receive a commission at no extra cost to you. Links are marked "Partner pick" and use rel="sponsored".</p>
+    <p><strong>Editorial independence.</strong> Partners do not review or approve our guides before publication, and payment does not change our recommendations.</p>
+    <p><strong>Not advice.</strong> Content is general information, not financial, legal, tax or medical advice. Consider your circumstances or consult a licensed professional.</p>
+  </div>
+</Base>

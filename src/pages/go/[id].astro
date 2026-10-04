@@ -1,0 +1,14 @@
+---
+// Clean affiliate redirects: /go/<offer>/ → your tracked link. Keeps raw links out of
+// content and lets you swap partners in one place. For click stats at scale, point these
+// at a self-hosted shortener such as Shlink (https://github.com/shlinkio/shlink).
+import { SITE } from '../../site.config.js';
+export function getStaticPaths() {
+  return Object.entries(SITE.affiliates).filter(([, url]) => url).map(([id, url]) => ({ params: { id }, props: { url } }));
+}
+const { url } = Astro.props;
+---
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8" /><meta name="robots" content="noindex, nofollow" />
+<meta http-equiv="refresh" content={`0;url=${url}`} /><link rel="canonical" href={url} /><title>Redirecting…</title></head>
+<body><p>Redirecting to our partner… <a href={url} rel="sponsored nofollow">Continue</a></p></body></html>

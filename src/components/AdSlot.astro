@@ -1,0 +1,11 @@
+---
+import { SITE } from '../site.config.js';
+const { kind } = Astro.props; // 'leader' | 'rect'
+const slot = SITE.adsense.slots[kind === 'leader' ? 'leaderboard' : 'sidebar'];
+const label = kind === 'leader' ? '728×90 / responsive' : '300×250';
+---
+{SITE.adsense.client && slot ? (
+  <div class="ad-live"><ins class="adsbygoogle" style="display:block" data-ad-client={SITE.adsense.client} data-ad-slot={slot} data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+) : SITE.showPlaceholders && (
+  <div class={`ad ${kind}`}><small>Advertisement</small><span>{label} slot · add your AdSense ID in src/site.config.js</span></div>
+)}

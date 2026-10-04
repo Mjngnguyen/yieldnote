@@ -1,0 +1,34 @@
+---
+import Base from '../layouts/Base.astro';
+import Calculator from '../components/Calculator.astro';
+import AdSlot from '../components/AdSlot.astro';
+import TopicCard from '../components/TopicCard.astro';
+import GuideList from '../components/GuideList.astro';
+import Signup from '../components/Signup.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { TOPICS } from '../lib/catalog.js';
+import { TOOLS } from '../lib/tools.js';
+import { SITE } from '../site.config.js';
+import { getGuides } from '../lib/site.js';
+const guides = (await getGuides()).filter((_, i) => i % 3 === 0).slice(0, 8);
+---
+<Base>
+  <section class="hero">
+    <div>
+      <span class="eyebrow">Guides · Calculators · Income ideas</span>
+      <h1>Make every dollar <em>do more work.</em></h1>
+      <p>Plain-English guides on investing, credit, insurance, crypto and side income, with calculators you can use in seconds.</p>
+      <div class="ctas"><a class="btn" href="/topics/">Browse topics</a><a class="btn ghost" href="/tools/">Try a calculator</a></div>
+    </div>
+    <Calculator id="compound" compact />
+  </section>
+  <AdSlot kind="leader" />
+  <section><div class="sec-head"><h2>Topics</h2><a href="/topics/" class="muted">All {TOPICS.length} topics →</a></div>
+    <div class="grid">{TOPICS.slice(0, 6).map((t) => <TopicCard t={t} />)}</div></section>
+  <section><div class="sec-head"><h2>Latest guides</h2></div><GuideList guides={guides} /></section>
+  <section><div class="sec-head"><h2>Free calculators</h2><a href="/tools/" class="muted">All tools →</a></div>
+    <div class="grid">{TOOLS.map((t) => <a class="topic" href={`/tools/${t.id}/`}><h3>{t.name}</h3><p>{t.desc}</p></a>)}</div></section>
+  <Signup id="newsletter" />
+  <section><div class="sec-head"><h2>Templates & courses</h2><a href="/shop/" class="muted">Shop →</a></div>
+    <div class="grid">{SITE.products.slice(0, 3).map((p) => <ProductCard p={p} />)}</div></section>
+</Base>

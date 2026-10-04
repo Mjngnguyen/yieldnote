@@ -1,0 +1,18 @@
+---
+import { toolBy, resultHTML } from '../lib/tools.js';
+const { id, compact = false } = Astro.props;
+const t = toolBy(id);
+const v = Object.fromEntries(t.fields.map((f) => [f.id, f.value]));
+---
+<div class="tool panel" data-tool={t.id} data-compact={compact ? '1' : '0'}>
+  <div class="sec-head">
+    <div><span class="eyebrow">Calculator</span><h3 class="tool-name">{t.name}</h3></div>
+    {compact && <a class="btn small ghost" href={`/tools/${t.id}/`}>Open full tool</a>}
+  </div>
+  <form>
+    {t.fields.map((f) => (
+      <label for={`${t.id}-${f.id}`}>{f.label}<input id={`${t.id}-${f.id}`} name={f.id} type="number" inputmode="decimal" step={f.step} value={f.value} /></label>
+    ))}
+  </form>
+  <div class="result" aria-live="polite" set:html={resultHTML(t, v, compact)} />
+</div>

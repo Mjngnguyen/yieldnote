@@ -1,0 +1,4 @@
+---
+const { tier } = Astro.props;
+---
+<span class="meter" title="Relative advertiser demand">Ad value <span>{[1, 2, 3, 4, 5].map((i) => <i class={i <= tier ? 'on' : ''}></i>)}</span></span>

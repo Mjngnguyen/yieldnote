@@ -1,0 +1,12 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import TopicCard from '../../components/TopicCard.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import { TOPICS } from '../../lib/catalog.js';
+---
+<Base title="All topics" description="Every topic we cover, ordered by advertiser demand.">
+  <PageHead eyebrow="Topics" title="Every topic" text="Ordered by how much advertisers pay to reach readers of each topic." />
+  <div class="grid">{TOPICS.map((t) => <TopicCard t={t} />)}</div>
+  <AdSlot kind="leader" />
+</Base>

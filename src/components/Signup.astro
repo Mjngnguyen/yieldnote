@@ -1,0 +1,26 @@
+---
+import { SITE } from '../site.config.js';
+const { variant = 'band', id = 'newsletter' } = Astro.props;
+const n = SITE.newsletter;
+---
+{variant === 'band' ? (
+  <section class="signup" id={id}>
+    <div><span class="eyebrow on-ink">Free download</span><h2>Get the {n.leadMagnet}</h2><p>{n.leadMagnetDetail}. Plus one practical money email a week. Unsubscribe anytime.</p></div>
+    <form class="nl-form" novalidate>
+      <label for={`${id}-email`} class="eyebrow on-ink full">Email address</label>
+      <input id={`${id}-email`} name="email" type="email" placeholder="you@example.com" required />
+      <button class="btn" type="submit">Send me the kit</button>
+      <p class="msg" role="status"></p>
+    </form>
+  </section>
+) : (
+  <div class="panel side-signup">
+    <strong class="side-title">Weekly money email</strong>
+    <span class="muted">One useful idea per week, plus the free {n.leadMagnet}.</span>
+    <form class="nl-form" novalidate>
+      <input id={`${id}-email`} name="email" type="email" placeholder="you@example.com" aria-label="Email address" required />
+      <button class="btn small full" type="submit">Subscribe</button>
+      <p class="msg" role="status"></p>
+    </form>
+  </div>
+)}

@@ -1,0 +1,10 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { SITE } from '../site.config.js';
+---
+<Base title="Contact">
+  <PageHead eyebrow="Contact" title="Get in touch" text="Questions, corrections or partnership ideas." />
+  <div class="copyline"><code>{SITE.contactEmail}</code><button class="btn small ghost" type="button" data-copy={SITE.contactEmail}>Copy email</button><span class="muted" data-copy-msg></span></div>
+  {SITE.bookingUrl && <a class="btn" href={SITE.bookingUrl} target="_blank" rel="noopener">Book a consultation</a>}
+</Base>

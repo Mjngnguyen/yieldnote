@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { SITE } from '../site.config.js';
+import { usd } from '../lib/site.js';
+---
+<Base title="Premium" description="Ad-free reading, monthly reports and every template included.">
+  <PageHead eyebrow="Membership" title="Go deeper, without ads" text="Members fund independent research and get every template included." />
+  <div class="grid">
+    {SITE.membership.map((m) => (
+      <div class={`panel product tier${m.featured ? ' featured' : ''}`}>
+        <span class={`eyebrow${m.featured ? ' gold' : ''}`}>{m.featured ? 'Most popular' : m.name}</span>
+        <h3>{m.name}</h3>
+        <div class="price">{m.price ? usd(m.price) : 'Free'} <small>/ {m.period}</small></div>
+        <ul>{m.perks.map((p) => <li>{p}</li>)}</ul>
+        {m.url
+          ? <a class={`btn${m.featured ? ' gold' : ''}`} href={m.url}>{m.price ? `Join ${m.name}` : 'Subscribe free'}</a>
+          : <span class="btn ghost" title="Add a payment link in src/site.config.js">Join {m.name} · add checkout link</span>}
+      </div>
+    ))}
+  </div>
+  {SITE.donateUrl && <p class="muted">Prefer a one-off thank-you? <a href={SITE.donateUrl} target="_blank" rel="noopener">Leave a tip</a>.</p>}
+</Base>

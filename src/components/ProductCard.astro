@@ -1,0 +1,9 @@
+---
+import { usd } from '../lib/site.js';
+const { p } = Astro.props;
+---
+<div class="panel product">
+  <span class="type">{p.type}</span><h3>{p.title}</h3><p class="muted flat">{p.desc}</p>
+  <div class="price">{usd(p.price)}</div>
+  {p.checkoutUrl ? <a class="btn" href={p.checkoutUrl} target="_blank" rel="noopener">Buy now</a> : <span class="btn ghost" title="Add a checkout link in src/site.config.js">Buy now · add checkout link</span>}
+</div>

@@ -1,0 +1,12 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import Calculator from '../../components/Calculator.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import { TOOLS } from '../../lib/tools.js';
+---
+<Base title="Free money calculators" description="Compound interest, loans, savings goals, crypto DCA, freelance rates and financial independence.">
+  <PageHead eyebrow="Tools" title="Free money calculators" text="Quick answers with your own numbers. Each one links to a guide that explains the result." />
+  {TOOLS.map((t) => <Calculator id={t.id} compact />)}
+  <AdSlot kind="leader" />
+</Base>

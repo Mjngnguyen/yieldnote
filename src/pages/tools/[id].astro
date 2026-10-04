@@ -1,0 +1,19 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import Calculator from '../../components/Calculator.astro';
+import Offer from '../../components/Offer.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import Signup from '../../components/Signup.astro';
+import { TOOLS } from '../../lib/tools.js';
+export function getStaticPaths() { return TOOLS.map((t) => ({ params: { id: t.id }, props: { t } })); }
+const { t } = Astro.props;
+---
+<Base title={`${t.name} calculator`} description={t.desc}>
+  <PageHead eyebrow="Calculator" title={`${t.name} calculator`} text={t.desc} />
+  <div class="article">
+    <div class="stack" data-pagefind-body><Calculator id={t.id} /><Offer id={t.offer} />
+      <p class="muted fine">Estimates for illustration only. Results depend on real rates, fees and taxes.</p></div>
+    <aside><AdSlot kind="rect" /><Signup variant="side" id="side-signup" /></aside>
+  </div>
+</Base>

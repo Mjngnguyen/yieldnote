@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { MODELS, FIELDS, estimateHTML } from '../lib/playbook.js';
+const v = Object.fromEntries(FIELDS.map((f) => [f[0], f[2]]));
+const checklist = [
+  ['Foundation', ['Buy a domain and connect hosting', 'Set name, URL and email in src/site.config.js', 'Push to GitHub; Cloudflare Pages or Netlify builds it with npm run build', 'Submit /sitemap-index.xml in Google Search Console']],
+  ['Ads approval', ['Publish 20–30 original, useful guides', 'Keep Privacy, Disclosure and Contact pages live', 'Apply to AdSense; add your publisher ID to src/site.config.js', 'Set showPlaceholders to false']],
+  ['Growth', ['Publish 2–3 guides a week from /admin', 'Add a calculator for each topic', 'Send the newsletter weekly (listmonk can mail new posts from /rss.xml)', 'Pitch sponsors once traffic is steady']]
+];
+---
+<Base title="Revenue playbook" description="Every way this site earns money, and an estimator." noindex>
+  <PageHead eyebrow="For the site owner" title="Revenue playbook" text={`${MODELS.length} ways this site earns, where each one lives on the site, and how to switch it on. This page is excluded from search engines.`} />
+  <div class="table-scroll panel"><table>
+    <thead><tr><th>Model</th><th>How it pays</th><th>Where on the site</th><th>How to switch it on</th><th>Effort</th></tr></thead>
+    <tbody>{MODELS.map((m) => <tr><td><strong>{m[0]}</strong></td><td>{m[1]}</td><td>{m[2]}</td><td>{m[3]}</td><td>{m[4]}</td></tr>)}</tbody>
+  </table></div>
+  <section class="tool panel" data-estimator>
+    <div><span class="eyebrow">Estimator</span><h2 class="h-mid">Monthly revenue estimate</h2>
+      <p class="muted flat">Pre-filled with example assumptions, not real results. Replace them with your analytics once you have traffic.</p></div>
+    <form>{FIELDS.map(([id, label, val, step]) => <label for={`est-${id}`}>{label}<input id={`est-${id}`} name={id} type="number" step={step} value={val} /></label>)}</form>
+    <div class="result" aria-live="polite" set:html={estimateHTML(v)} />
+  </section>
+  <section><h2 class="h-mid">Launch checklist</h2><div class="grid">
+    {checklist.map(([h, items]) => <div class="panel"><h3 class="h-small">{h}</h3><ul class="tight">{items.map((i) => <li>{i}</li>)}</ul></div>)}
+  </div></section>
+</Base>

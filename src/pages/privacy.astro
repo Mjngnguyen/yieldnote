@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { SITE } from '../site.config.js';
+---
+<Base title="Privacy policy">
+  <PageHead eyebrow="Legal" title="Privacy policy" />
+  <div class="legal">
+    <p>This template covers the data a monetised site typically collects. Have it reviewed for your jurisdiction (GDPR, CCPA, Vietnam Decree 13/2023, etc.) before launch.</p>
+    <ul>
+      <li><strong>Email address</strong>, if you subscribe, stored with our email provider to send the newsletter.</li>
+      <li><strong>Analytics</strong>: pages viewed, device and approximate location. Cookie-based analytics load only after you consent; cookieless analytics may run without consent.</li>
+      <li><strong>Advertising</strong>: with your consent, third-party vendors including Google use cookies to serve ads based on prior visits to this and other websites. You can opt out of personalised advertising in Google Ads Settings.</li>
+      <li><strong>Comments</strong>, if enabled, are stored in GitHub Discussions under your GitHub account.</li>
+      <li><strong>Purchases</strong> are processed by our payment provider; we never see full card details.</li>
+    </ul>
+    <p>Change your choices any time with "Cookie settings" in the footer. To access or delete your data, contact <code>{SITE.contactEmail}</code>.</p>
+  </div>
+</Base>

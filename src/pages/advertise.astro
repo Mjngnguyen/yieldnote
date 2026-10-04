@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { SITE } from '../site.config.js';
+---
+<Base title="Advertise" description="Sponsor guides, calculators and the newsletter.">
+  <PageHead eyebrow="Partners" title="Advertise with us" text="Reach readers who are actively making money decisions." />
+  <div class="grid">
+    <div class="panel"><h3>Audience</h3><p class="muted">Add your monthly pageviews, subscribers, open rate and top countries here once you have real analytics. Sponsors ask for these first.</p></div>
+    <div class="panel"><h3>Formats</h3><p class="muted">Newsletter placements, sponsored guides, sitewide banners and calculator sponsorships. All sponsored content is labelled.</p></div>
+  </div>
+  <div class="table-scroll panel"><table>
+    <thead><tr><th>Format</th><th>Unit</th><th>Rate</th></tr></thead>
+    <tbody>{SITE.sponsorRates.map((r) => <tr><td>{r.format}</td><td>{r.unit}</td><td class="num">{r.price || <span class="muted">Set in src/site.config.js</span>}</td></tr>)}</tbody>
+  </table></div>
+  <div class="copyline"><span>Media inquiries:</span><code>{SITE.contactEmail}</code><button class="btn small ghost" type="button" data-copy={SITE.contactEmail}>Copy email</button><span class="muted" data-copy-msg></span></div>
+  {SITE.bookingUrl && <a class="btn" href={SITE.bookingUrl} target="_blank" rel="noopener">Book a call</a>}
+</Base>

@@ -1,0 +1,9 @@
+---
+import { topicBy } from '../lib/site.js';
+const { guides } = Astro.props;
+---
+<div class="list">
+  {guides.map((g) => (
+    <a href={`/guides/${g.id}/`}><div><h3>{g.data.title}</h3><p>{g.data.description}</p></div><span class="tag">{topicBy(g.data.topic)?.name}</span></a>
+  ))}
+</div>

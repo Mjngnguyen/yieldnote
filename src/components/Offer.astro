@@ -1,0 +1,14 @@
+---
+import { SITE } from '../site.config.js';
+import { OFFERS } from '../lib/catalog.js';
+const { id } = Astro.props;
+const o = OFFERS[id], url = SITE.affiliates[id];
+---
+{o && (url || SITE.showPlaceholders) && (
+  <div class="offer" data-pagefind-ignore>
+    <div><span class="sp">Partner pick</span><strong>{o.label}</strong><p>{o.pitch}</p></div>
+    {url
+      ? <a class="btn" href={`/go/${id}/`} rel="sponsored nofollow" target="_blank">See offer</a>
+      : <span class="btn ghost" title={`Paste your affiliate link for '${id}' in src/site.config.js`}>Add link</span>}
+  </div>
+)}

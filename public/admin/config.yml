@@ -1,0 +1,38 @@
+# Sveltia CMS configuration. Sign in at https://<your-site>/admin/ with GitHub.
+# Local editing without auth: run `npm run dev`, open /admin/ in Chrome/Edge and choose "Work with Local Repository".
+backend:
+  name: github
+  repo: Mjngnguyen/yieldnote
+  branch: main
+  # base_url: https://<your-sveltia-cms-auth-worker>.workers.dev   # needed for GitHub sign-in on non-Netlify hosts
+
+media_folder: public/images
+public_folder: /images
+site_url: https://example.com
+
+collections:
+  - name: articles
+    label: Guides
+    label_singular: Guide
+    folder: src/content/articles
+    create: true
+    slug: "{{slug}}"
+    sortable_fields: [title, pubDate, topic]
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Description, name: description, widget: text, hint: "One sentence shown under the title and in search results." }
+      - label: Topic
+        name: topic
+        widget: select
+        options: [insurance, credit, investing, personal-finance, real-estate, crypto, ai-tools, business, make-money-online, careers, travel, health]
+      - { label: Published, name: pubDate, widget: datetime, time_format: false, date_format: "YYYY-MM-DD", format: "YYYY-MM-DD" }
+      - { label: Updated, name: updatedDate, widget: datetime, time_format: false, date_format: "YYYY-MM-DD", format: "YYYY-MM-DD", required: false }
+      - label: Partner offers
+        name: offers
+        widget: select
+        multiple: true
+        required: false
+        options: [broker, robo, exchange, hardwareWallet, budgetApp, savings, creditCard, creditMonitor, personalLoan, lifeInsurance, autoInsurance, realEstate, hosting, emailTool, aiWriter, courses, fitnessApp, travelCard, travelInsurance, booking]
+      - { label: Calculator, name: tool, widget: select, required: false, options: [compound, loan, goal, crypto, freelance, fire] }
+      - { label: Draft, name: draft, widget: boolean, default: false }
+      - { label: Body, name: body, widget: markdown }
